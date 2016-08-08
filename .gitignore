@@ -1,0 +1,7 @@
+*/*.pyc
+*/imgs/*
+*/test.py
+*/runner.py
+*/items.json
+*/sina/sina_config.py
+.idea/
