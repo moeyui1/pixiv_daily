@@ -18,7 +18,7 @@ class PixivDaliyImageInfoPipeline(object):
     b = False
 
     def __init__(self):
-        self.file = open('items.json', 'w')
+        self.file = open('items.json', 'wb')
         self.file.write('[')
 
     def process_item(self, item, spider):
@@ -30,7 +30,7 @@ class PixivDaliyImageInfoPipeline(object):
         line += json.dumps(dict(item), ensure_ascii=False, indent=2)
 
         line += '\n'
-        self.file.write(line)
+        self.file.write(line.encode('utf-8'))
         return item
 
     def close_spider(self, spider):

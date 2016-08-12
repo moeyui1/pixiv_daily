@@ -18,8 +18,12 @@ NEWSPIDER_MODULE = 'pixiv_daily.spiders'
 # LOG_LEVEL = "ERROR"
 DOWNLOAD_DELAY = 1
 '''用户偏好设置'''
-# 因为P站的日榜是中午12点更新的，所以我们一般获取前一天的日榜
-START_DATE =  (datetime.datetime.now() - datetime.timedelta(days = 1)) # 在此设置开始时间
+# 因为P站的日榜是中午12点更新的，所以我们一般获取前一天（或者两天）的日榜
+if(datetime.datetime.now().hour>=12):
+    delta=1
+else:
+    delta=2
+START_DATE =  (datetime.datetime.now() - datetime.timedelta(days = delta)) # 在此设置开始时间
 FILES_STORE = './imgs/'  # 用于保存图片的地址，最后需要加上/
 
 # 登录信息
@@ -27,7 +31,7 @@ PIXIV_USER_NAME = ''  # 在此设置登录用户名
 PIXIV_USER_PASS = ''  # 在此设置登录密码
 
 # 获取榜单模式
-MODE='monthly' #可选'weekly','daily','monthly'
+MODE='daily' #可选'weekly','daily','monthly'
 '''用户偏好设置END'''
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
