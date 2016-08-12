@@ -16,7 +16,7 @@ BOT_NAME = 'pixiv_daily'
 SPIDER_MODULES = ['pixiv_daily.spiders']
 NEWSPIDER_MODULE = 'pixiv_daily.spiders'
 # LOG_LEVEL = "ERROR"
-DOWNLOAD_DELAY = 1
+
 '''用户偏好设置'''
 # 因为P站的日榜是中午12点更新的，所以我们一般获取前一天（或者两天）的日榜
 if(datetime.datetime.now().hour>=12):
@@ -40,12 +40,12 @@ MODE='daily' #可选'weekly','daily','monthly'
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 100
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-# DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 2
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -111,4 +111,9 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-
+# To increase maximum thread pool size use
+REACTOR_THREADPOOL_MAXSIZE = 20
+# 重试
+RETRY_ENABLED = True
+#下载超时
+DOWNLOAD_TIMEOUT = 15

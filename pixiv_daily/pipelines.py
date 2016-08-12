@@ -12,17 +12,21 @@ import scrapy
 from scrapy.exceptions import DropItem
 from scrapy.http import Request
 from scrapy.pipelines.images import FilesPipeline
+import logging
 
 
 class PixivDaliyImageInfoPipeline(object):
     b = False
 
-    def __init__(self):
-        self.file = open('items.json', 'wb')
+    def open_spider(self, spider):
+        settings = spider.settings
+        filepath='%s%s/%s/%s' % (settings['FILES_STORE'],settings['START_DATE'].strftime("%Y/%m/%d"), settings['MODE'],
+                                 'items.json')
+        self.file = open(filepath, 'wb')
         self.file.write('[')
 
     def process_item(self, item, spider):
-        line=''
+        line = ''
         if (self.b):
             line += ','
         else:
@@ -99,4 +103,4 @@ class PixivImagesPipeline(FilesPipeline):
             filename = filename.replace(c, "")
         # 获取个settings真的这么麻烦吗？。。。
         settings = self.spiderinfo.spider.settings
-        return '%s/%s/%s' % (settings['START_DATE'].strftime("%Y/%m/%d"), settings['MODE'],filename)
+        return '%s/%s/%s' % (settings['START_DATE'].strftime("%Y/%m/%d"), settings['MODE'], filename)
