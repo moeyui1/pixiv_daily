@@ -20,9 +20,11 @@ class PixivDaliyImageInfoPipeline(object):
 
     def open_spider(self, spider):
         settings = spider.settings
-        filepath='%s%s/%s/%s' % (settings['FILES_STORE'],settings['START_DATE'].strftime("%Y/%m/%d"), settings['MODE'],
-                                 'items.json')
-        self.file = open(filepath, 'wb')
+        filepath='%s%s/%s' % (settings['FILES_STORE'],settings['START_DATE'].strftime("%Y/%m/%d"), settings['MODE'])
+        if not os.path.exists(filepath):
+            os.makedirs(filepath)
+        fullpath='%s/%s' % (filepath,'item.json')
+        self.file = open(fullpath, 'w')
         self.file.write('[')
 
     def process_item(self, item, spider):
