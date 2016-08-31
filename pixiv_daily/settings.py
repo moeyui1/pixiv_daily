@@ -19,11 +19,11 @@ NEWSPIDER_MODULE = 'pixiv_daily.spiders'
 
 '''用户偏好设置'''
 # 因为P站的日榜是中午12点更新的，所以我们一般获取前一天（或者两天）的日榜
-if(datetime.datetime.now().hour>=12):
-    delta=1
+if (datetime.datetime.now().hour >= 12):
+    delta = 1
 else:
-    delta=2
-START_DATE =  (datetime.datetime.now() - datetime.timedelta(days = delta)) # 在此设置开始时间
+    delta = 2
+START_DATE = (datetime.datetime.now() - datetime.timedelta(days=delta))  # 在此设置开始时间
 FILES_STORE = './imgs/'  # 用于保存图片的地址，最后需要加上/
 
 # 登录信息
@@ -31,7 +31,12 @@ PIXIV_USER_NAME = ''  # 在此设置登录用户名
 PIXIV_USER_PASS = ''  # 在此设置登录密码
 
 # 获取榜单模式
-MODE='daily' #可选'weekly','daily','monthly'
+MODE = 'daily'  # 可选'weekly','daily','monthly'
+
+# 使用代理
+PROXY_ENABLED = False
+# 代理地址
+PROXY_URL = '127.0.0.1:1080'
 '''用户偏好设置END'''
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -45,7 +50,7 @@ CONCURRENT_REQUESTS = 100
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -66,15 +71,18 @@ DEFAULT_REQUEST_HEADERS = {
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 SPIDER_MIDDLEWARES = {
-   'pixiv_daily.middlewares.UserAgentMiddleware': 543,
+
 }
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#     # 'pixiv_daily.middlewares.MyCustomDownloaderMiddleware': 543,
-#     # 'scrapy.contrib.downloadermiddleware.httpcompression.HttpCompressionMiddleware': None
-# }
+DOWNLOADER_MIDDLEWARES = {
+    # 'pixiv_daily.middlewares.MyCustomDownloaderMiddleware': 543,
+    # 'scrapy.contrib.downloadermiddleware.httpcompression.HttpCompressionMiddleware': None
+    'pixiv_daily.middlewares.UserAgentMiddleware': 1,
+    # 'scrapy.contrib.downloadermiddleware.httpproxy.HttpProxyMiddleware': 110,
+    # 'pixiv_daily.middlewares.ProxyMiddleware': 100,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -115,5 +123,5 @@ ITEM_PIPELINES = {
 REACTOR_THREADPOOL_MAXSIZE = 20
 # 重试
 RETRY_ENABLED = True
-#下载超时
-DOWNLOAD_TIMEOUT = 15
+# 下载超时
+DOWNLOAD_TIMEOUT = 30
